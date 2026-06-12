@@ -180,9 +180,13 @@ onMounted(() => {
   display: flex; flex-direction: column; gap: 16px;
   padding-bottom: 20px;
 }
+.sidebar-card,
+.article-sidebar :deep(.toc-card) {
+  flex-shrink: 0;
+}
 .sidebar-card {
   background: var(--bg-card); border: 1px solid var(--border-color);
-  border-radius: 14px; padding: 20px; flex-shrink: 0;
+  border-radius: 14px; padding: 20px;
 }
 .sidebar-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; color: var(--text-primary); }
 

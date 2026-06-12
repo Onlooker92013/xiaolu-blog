@@ -75,7 +75,7 @@ onMounted(() => {
   background: var(--bg-card); border: 1px solid var(--border-color);
   border-radius: 14px; padding: 16px 20px; flex-shrink: 0;
 }
-.toc-card.expanded { flex-shrink: 1; min-height: 0; }
+.toc-card.expanded { min-height: 0; }
 .toc-header {
   display: flex; justify-content: space-between; align-items: center;
   cursor: pointer; user-select: none;
