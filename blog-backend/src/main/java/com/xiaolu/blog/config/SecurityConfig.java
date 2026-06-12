@@ -45,6 +45,7 @@ public class SecurityConfig {
                     "/api/comments/**",
                     "/api/friends/**",
                     "/api/search/**",
+                    "/api/settings/**",
                     "/api/upload/**",
                     "/api/rss/**",
                     "/doc.html",
