@@ -121,10 +121,11 @@ marked.use({
         const id = text.replace(/<[^>]*>/g, '').replace(/[^\w一-鿿\s-]/g, '').trim().replace(/\s+/g, '-').toLowerCase() || 'heading'
         return `<h${level} id="${id}">${text}</h${level}>`
       })
-      // 2. Code blocks: wrap with copy + collapse
-      html = html.replace(/<pre><code class="language-(\w*)?">?([\s\S]*?)<\/code><\/pre>/g, (_, lang, code) => {
+      // 2. Code blocks: wrap with copy + collapse (with or without language)
+      html = html.replace(/<pre><code(?: class="language-(\w*)")?>([\s\S]*?)<\/code><\/pre>/g, (_, lang, code) => {
         const label = lang || 'code'
         const idx = ++codeBlockIndex
+        const langAttr = lang ? ` class="language-${lang}"` : ''
         return `<div class="code-block-wrapper">
           <div class="code-block-header">
             <span class="code-lang">${label}</span>
@@ -134,7 +135,7 @@ marked.use({
             </div>
           </div>
           <div class="code-block-body" data-fold-body="${idx}">
-            <pre><code class="language-${label}">${code}</code></pre>
+            <pre><code${langAttr}>${code}</code></pre>
           </div>
         </div>`
       })
