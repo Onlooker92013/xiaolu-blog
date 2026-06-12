@@ -53,6 +53,9 @@
         <div class="author-bio">生活明朗，万物可爱</div>
       </div>
 
+      <!-- 文章目录 -->
+      <TocAside :content="renderedContent" />
+
       <!-- 相关推荐 -->
       <div class="sidebar-card" v-if="related.length">
         <h4>📖 相关推荐</h4>
@@ -81,6 +84,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import api from '@/api'
 import CommentSection from '@/components/CommentSection.vue'
+import TocAside from '@/components/TocAside.vue'
 import { marked } from 'marked'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github-dark.css'
@@ -109,6 +113,20 @@ marked.setOptions({
     return hljs.highlightAuto(code).value
   }
 })
+
+// Custom heading renderer to add IDs
+const renderer = new marked.Renderer()
+renderer.heading = function({ text, depth }: { text: string; depth: number }) {
+  const id = text
+    .replace(/<[^>]*>/g, '')
+    .replace(/[^一-龥a-zA-Z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .toLowerCase()
+    || 'heading'
+  return `<h${depth} id="${id}">${text}</h${depth}>`
+}
+marked.use({ renderer })
 
 const renderedContent = computed(() => displayContent.value ? marked(displayContent.value) : '')
 
