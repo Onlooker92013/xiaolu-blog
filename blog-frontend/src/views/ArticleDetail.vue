@@ -107,21 +107,18 @@ const readingTime = computed(() => {
   return Math.max(1, Math.ceil((cnChars / 400) + (words / 200)))
 })
 
-// Marked: highlight + heading IDs
+// Marked: highlight + postprocess heading IDs
 marked.use({
   highlight(code: string, lang: string) {
     if (lang && hljs.getLanguage(lang)) return hljs.highlight(code, { language: lang }).value
     return hljs.highlightAuto(code).value
   },
-  renderer: {
-    heading(token: any) {
-      const depth = token.depth
-      const text = token.tokens
-        ? token.tokens.map((t: any) => t.raw || t.text || '').join('')
-        : (token.text || token.raw || '')
-      const plain = text.replace(/<[^>]*>/g, '')
-      const id = plain.replace(/[^\w一-鿿\s-]/g, '').trim().replace(/\s+/g, '-').toLowerCase() || 'heading'
-      return `<h${depth} id="${id}">${text}</h${depth}>`
+  hooks: {
+    postprocess(html: string) {
+      return html.replace(/<h([1-3])>(.*?)<\/h\1>/g, (_: string, level: string, text: string) => {
+        const id = text.replace(/<[^>]*>/g, '').replace(/[^\w一-鿿\s-]/g, '').trim().replace(/\s+/g, '-').toLowerCase() || 'heading'
+        return `<h${level} id="${id}">${text}</h${level}>`
+      })
     }
   }
 })
