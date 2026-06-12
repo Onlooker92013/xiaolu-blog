@@ -176,8 +176,13 @@ onMounted(() => {
   width: 280px; flex-shrink: 0;
   position: sticky; top: 80px;
   max-height: calc(100vh - 100px);
-  overflow-y: auto; scrollbar-width: thin;
+  overflow-y: auto;
   display: flex; flex-direction: column; gap: 16px;
+  /* hide scrollbar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.article-sidebar::-webkit-scrollbar { display: none; }
   padding-bottom: 20px;
 }
 .sidebar-card,
