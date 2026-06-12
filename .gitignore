@@ -1,0 +1,34 @@
+# ===== Backend =====
+blog-backend/target/
+blog-backend/uploads/
+blog-backend/logs/
+*.class
+*.jar
+*.war
+!*.jar.original
+
+# ===== Frontend =====
+blog-frontend/node_modules/
+blog-frontend/dist/
+blog-frontend/.vite/
+
+# ===== IDE =====
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+*~
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== Environment =====
+.env
+.env.local
+*.log
+
+# ===== Python scripts =====
+scripts/__pycache__/

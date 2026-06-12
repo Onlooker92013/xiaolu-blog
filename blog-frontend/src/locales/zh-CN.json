@@ -1,0 +1,45 @@
+{
+  "nav": {
+    "home": "首页",
+    "articles": "文章",
+    "archives": "归档",
+    "categories": "分类",
+    "tags": "标签",
+    "friends": "友链",
+    "about": "关于",
+    "search": "搜索",
+    "admin": "管理"
+  },
+  "home": {
+    "greeting": "生活明朗, 万物可爱",
+    "latestArticles": "最新文章",
+    "topArticles": "推荐文章",
+    "categories": "文章分类",
+    "viewAll": "查看全部",
+    "readMore": "阅读更多"
+  },
+  "article": {
+    "publishedOn": "发表于",
+    "updatedOn": "更新于",
+    "category": "分类",
+    "tags": "标签",
+    "author": "作者",
+    "views": "阅读量",
+    "prevArticle": "上一篇",
+    "nextArticle": "下一篇",
+    "noArticle": "暂无文章"
+  },
+  "common": {
+    "loading": "加载中...",
+    "noMore": "没有更多了",
+    "confirm": "确认",
+    "cancel": "取消",
+    "submit": "提交",
+    "back": "返回"
+  },
+  "footer": {
+    "copyright": "© 2020 - 2026 By 小鹿",
+    "theme": "主题",
+    "days": "建站天数"
+  }
+}

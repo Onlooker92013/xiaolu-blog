@@ -1,0 +1,45 @@
+{
+  "nav": {
+    "home": "Home",
+    "articles": "Articles",
+    "archives": "Archives",
+    "categories": "Categories",
+    "tags": "Tags",
+    "friends": "Friends",
+    "about": "About",
+    "search": "Search",
+    "admin": "Admin"
+  },
+  "home": {
+    "greeting": "Life is bright, everything is lovely",
+    "latestArticles": "Latest Articles",
+    "topArticles": "Top Articles",
+    "categories": "Categories",
+    "viewAll": "View All",
+    "readMore": "Read More"
+  },
+  "article": {
+    "publishedOn": "Published on",
+    "updatedOn": "Updated on",
+    "category": "Category",
+    "tags": "Tags",
+    "author": "Author",
+    "views": "Views",
+    "prevArticle": "Previous",
+    "nextArticle": "Next",
+    "noArticle": "No articles yet"
+  },
+  "common": {
+    "loading": "Loading...",
+    "noMore": "No more",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "back": "Back"
+  },
+  "footer": {
+    "copyright": "© 2020 - 2026 By Xiaolu",
+    "theme": "Theme",
+    "days": "Days Online"
+  }
+}
