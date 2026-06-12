@@ -11,6 +11,7 @@ public class Comment {
     private Long id;
     private Long articleId;
     private Long userId;
+    private String guestName;   // 匿名用户名
     private Long parentId;      // 父评论ID，null为顶级评论
     private String content;
     @TableField(fill = FieldFill.INSERT)

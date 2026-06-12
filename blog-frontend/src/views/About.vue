@@ -32,7 +32,7 @@
     <div class="about-card guestbook-card">
       <div class="about-card-icon">💬</div>
       <h3>留言板</h3>
-      <div id="twikoo" class="twikoo-wrap"></div>
+      <CommentSection :article-id="0" />
     </div>
   </div>
 </template>
@@ -41,6 +41,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { Message } from '@element-plus/icons-vue'
 import api from '@/api'
+import CommentSection from '@/components/CommentSection.vue'
 
 const settings = ref({})
 const skills = computed(() => (settings.value.about_skills || '').split(',').map(s => s.trim()).filter(Boolean))
@@ -50,13 +51,6 @@ onMounted(async () => {
     const res = await api.get('/settings')
     if (res.data) settings.value = res.data
   } catch (e) { /* ignore */ }
-  const twikooEnv = localStorage.getItem('twikooEnvId') || ''
-  if (twikooEnv) {
-    const script = document.createElement('script')
-    script.src = 'https://cdn.staticfile.org/twikoo/1.6.39/twikoo.all.min.js'
-    script.onload = () => { window.twikoo && window.twikoo.init({ envId: twikooEnv, el: '#twikoo' }) }
-    document.body.appendChild(script)
-  }
 })
 </script>
 

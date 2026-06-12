@@ -41,14 +41,7 @@
       </div>
 
       <!-- 评论区 -->
-      <div class="comments-section">
-        <h3>💬 评论</h3>
-        <div v-if="twikooReady" id="twikoo"></div>
-        <div v-else class="comments-placeholder">
-          <p>评论功能未配置</p>
-          <p class="hint">部署 Twikoo 后将自动启用</p>
-        </div>
-      </div>
+      <CommentSection :article-id="article.id" />
     </div>
 
     <!-- 右侧栏 -->
@@ -87,6 +80,7 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import api from '@/api'
+import CommentSection from '@/components/CommentSection.vue'
 import { marked } from 'marked'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github-dark.css'
@@ -98,7 +92,6 @@ const article = ref<any>(null)
 const nav = ref<{ prev: any; next: any }>({ prev: null, next: null })
 const related = ref<any[]>([])
 const latestArticles = ref<any[]>([])
-const twikooReady = ref(false)
 
 const isZh = computed(() => locale.value === 'zh-CN')
 const displayTitle = computed(() => isZh.value ? article.value?.title : (article.value?.titleEn || article.value?.title))
@@ -146,20 +139,6 @@ watch(() => route.params.id, () => {
 
 onMounted(() => {
   fetchArticle()
-  // Twikoo disabled - configure via localStorage.setItem('twikooEnvId', 'your-id')
-  const twikooEnv = localStorage.getItem('twikooEnvId') || ''
-  if (twikooEnv) {
-    const script = document.createElement('script')
-    script.src = 'https://cdn.staticfile.org/twikoo/1.6.39/twikoo.all.min.js'
-    script.onload = () => {
-      try {
-        ;(window as any).twikoo.init({ envId: twikooEnv, el: '#twikoo', lang: locale.value === 'zh-CN' ? 'zh-CN' : 'en' })
-        twikooReady.value = true
-      } catch (e) { console.log('Twikoo init failed:', e); twikooReady.value = false }
-    }
-    script.onerror = (e) => { console.log('Twikoo script load failed'); twikooReady.value = false }
-    document.body.appendChild(script)
-  }
 })
 </script>
 

@@ -33,7 +33,11 @@ public class CommentService {
     }
 
     public Comment create(Comment comment, Long userId) {
-        comment.setUserId(userId);
+        if (userId != null && userId > 0) {
+            comment.setUserId(userId);
+        } else {
+            comment.setUserId(0L);
+        }
         commentMapper.insert(comment);
         return comment;
     }
