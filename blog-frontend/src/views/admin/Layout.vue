@@ -28,6 +28,9 @@
         <el-menu-item index="/admin/friends">
           <el-icon><Link /></el-icon><span>友链管理</span>
         </el-menu-item>
+        <el-menu-item index="/admin/comments">
+          <el-icon><ChatDotRound /></el-icon><span>评论管理</span>
+        </el-menu-item>
         <el-menu-item index="/admin/settings">
           <el-icon><Setting /></el-icon><span>个人设置</span>
         </el-menu-item>
@@ -70,7 +73,7 @@ import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/app'
 import { useUserStore } from '@/stores/user'
-import { DataBoard, Document, Folder, PriceTag, Link, Setting, Fold, Expand, Sunny, Moon, SwitchButton, HomeFilled, UserFilled } from '@element-plus/icons-vue'
+import { DataBoard, Document, Folder, PriceTag, Link, Setting, ChatDotRound, Fold, Expand, Sunny, Moon, SwitchButton, HomeFilled, UserFilled } from '@element-plus/icons-vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -87,6 +90,7 @@ const pageTitle = computed(() => {
     '/admin/categories': '分类管理',
     '/admin/tags': '标签管理',
     '/admin/friends': '友链管理',
+    '/admin/comments': '评论管理',
     '/admin/settings': '个人设置'
   }
   return map[route.path] || '管理后台'

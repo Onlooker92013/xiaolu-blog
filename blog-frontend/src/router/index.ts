@@ -25,6 +25,7 @@ const router = createRouter({
         { path: 'categories', name: 'AdminCategories', component: () => import('@/views/admin/Categories.vue') },
         { path: 'tags', name: 'AdminTags', component: () => import('@/views/admin/Tags.vue') },
         { path: 'friends', name: 'AdminFriends', component: () => import('@/views/admin/Friends.vue') },
+        { path: 'comments', name: 'AdminComments', component: () => import('@/views/admin/Comments.vue') },
         { path: 'settings', name: 'AdminSettings', component: () => import('@/views/admin/Settings.vue') }
       ]
     },
