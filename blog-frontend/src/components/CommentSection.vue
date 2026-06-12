@@ -147,7 +147,7 @@ onMounted(fetchComments)
 <style scoped>
 .comment-section { margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--border-color); }
 .comment-section h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; }
-.comment-form { margin-bottom: 24px; padding: 16px; background: var(--bg-primary); border-radius: 12px; }
+.comment-form { margin-bottom: 24px; padding: 16px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; }
 .comment-list { display: flex; flex-direction: column; gap: 0; }
 .comment-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border-color); }
 .comment-item:last-child { border-bottom: none; }
@@ -163,4 +163,29 @@ onMounted(fetchComments)
 .comment-content { margin-top: 4px; font-size: 0.93rem; line-height: 1.6; color: var(--text-secondary); word-break: break-word; }
 .comment-actions { margin-top: 4px; }
 .reply-form { margin-top: 8px; padding: 8px; background: var(--bg-primary); border-radius: 8px; }
+
+/* Dark mode fix for input fields */
+.comment-form :deep(.el-input__wrapper),
+.comment-form :deep(.el-textarea__inner),
+.reply-form :deep(.el-input__wrapper),
+.reply-form :deep(.el-textarea__inner) {
+  background-color: var(--bg-card) !important;
+  box-shadow: 0 0 0 1px var(--border-color) inset !important;
+}
+.comment-form :deep(.el-input__inner),
+.comment-form :deep(.el-textarea__inner),
+.reply-form :deep(.el-input__inner),
+.reply-form :deep(.el-textarea__inner) {
+  color: var(--text-primary) !important;
+}
+.comment-form :deep(.el-input__wrapper:hover),
+.reply-form :deep(.el-input__wrapper:hover) {
+  box-shadow: 0 0 0 1px var(--accent) inset !important;
+}
+.comment-form :deep(.el-input__inner::placeholder),
+.comment-form :deep(.el-textarea__inner::placeholder),
+.reply-form :deep(.el-input__inner::placeholder),
+.reply-form :deep(.el-textarea__inner::placeholder) {
+  color: var(--text-muted) !important;
+}
 </style>

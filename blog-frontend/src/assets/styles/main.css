@@ -222,11 +222,20 @@ img { max-width: 100%; }
   color: #fff;
 }
 [data-theme="dark"] .el-input__wrapper {
-  background-color: var(--bg-secondary);
+  background-color: var(--bg-card);
   box-shadow: 0 0 0 1px var(--border-color) inset;
 }
 [data-theme="dark"] .el-input__inner {
   color: var(--text-primary);
+}
+[data-theme="dark"] .el-textarea__inner {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  box-shadow: 0 0 0 1px var(--border-color) inset;
+}
+[data-theme="dark"] .el-input__wrapper:hover,
+[data-theme="dark"] .el-textarea__inner:hover {
+  box-shadow: 0 0 0 1px var(--accent) inset !important;
 }
 [data-theme="dark"] .el-button--default {
   --el-button-bg-color: var(--bg-card);
