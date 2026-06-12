@@ -107,26 +107,24 @@ const readingTime = computed(() => {
   return Math.max(1, Math.ceil((cnChars / 400) + (words / 200)))
 })
 
-marked.setOptions({
+// Marked: highlight + heading IDs
+marked.use({
   highlight(code: string, lang: string) {
     if (lang && hljs.getLanguage(lang)) return hljs.highlight(code, { language: lang }).value
     return hljs.highlightAuto(code).value
+  },
+  renderer: {
+    heading({ text, depth }: { text: string; depth: number }) {
+      const id = text
+        .replace(/<[^>]*>/g, '')
+        .replace(/[^\w一-鿿\s-]/g, '')
+        .trim()
+        .replace(/\s+/g, '-')
+        .toLowerCase() || 'heading'
+      return `<h${depth} id="${id}">${text}</h${depth}>`
+    }
   }
 })
-
-// Custom heading renderer to add IDs
-const renderer = new marked.Renderer()
-renderer.heading = function({ text, depth }: { text: string; depth: number }) {
-  const id = text
-    .replace(/<[^>]*>/g, '')
-    .replace(/[^一-龥a-zA-Z0-9\s-]/g, '')
-    .trim()
-    .replace(/\s+/g, '-')
-    .toLowerCase()
-    || 'heading'
-  return `<h${depth} id="${id}">${text}</h${depth}>`
-}
-marked.use({ renderer })
 
 const renderedContent = computed(() => displayContent.value ? marked(displayContent.value) : '')
 
