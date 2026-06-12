@@ -114,13 +114,13 @@ marked.use({
     return hljs.highlightAuto(code).value
   },
   renderer: {
-    heading({ text, depth }: { text: string; depth: number }) {
-      const id = text
-        .replace(/<[^>]*>/g, '')
-        .replace(/[^\w一-鿿\s-]/g, '')
-        .trim()
-        .replace(/\s+/g, '-')
-        .toLowerCase() || 'heading'
+    heading(token: any) {
+      const depth = token.depth
+      const text = token.tokens
+        ? token.tokens.map((t: any) => t.raw || t.text || '').join('')
+        : (token.text || token.raw || '')
+      const plain = text.replace(/<[^>]*>/g, '')
+      const id = plain.replace(/[^\w一-鿿\s-]/g, '').trim().replace(/\s+/g, '-').toLowerCase() || 'heading'
       return `<h${depth} id="${id}">${text}</h${depth}>`
     }
   }
