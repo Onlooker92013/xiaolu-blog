@@ -44,6 +44,20 @@
           </el-form-item>
         </el-form>
       </el-card>
+
+      <!-- 网站设置 -->
+      <el-card shadow="never" style="margin-top:20px">
+        <template #header><h3>🌐 网站设置</h3></template>
+        <el-form :model="siteForm" label-width="100px" style="max-width:500px">
+          <el-form-item label="网站名称"><el-input v-model="siteForm.site_name" /></el-form-item>
+          <el-form-item label="网站标语"><el-input v-model="siteForm.site_slogan" /></el-form-item>
+          <el-form-item label="头像URL"><el-input v-model="siteForm.avatar_url" /></el-form-item>
+          <el-form-item label="个人介绍"><el-input v-model="siteForm.about_bio" type="textarea" :rows="3" /></el-form-item>
+          <el-form-item label="联系方式"><el-input v-model="siteForm.about_contact" type="textarea" :rows="2" /></el-form-item>
+          <el-form-item label="技能标签"><el-input v-model="siteForm.about_skills" placeholder="逗号分隔: Vue, Java, Docker" /></el-form-item>
+          <el-form-item><el-button type="primary" @click="saveSiteSettings" :loading="siteSaving">保存网站设置</el-button></el-form-item>
+        </el-form>
+      </el-card>
     </div>
   </div>
 </template>
@@ -56,7 +70,9 @@ import { ElMessage } from 'element-plus'
 const profile = reactive({ username: '', role: '', email: '', avatar: '' })
 const saving = ref(false)
 const changing = ref(false)
+const siteSaving = ref(false)
 const pwdRef = ref()
+const siteForm = reactive({ site_name: '', site_slogan: '', avatar_url: '', about_bio: '', about_contact: '', about_skills: '' })
 
 const pwdForm = reactive({ oldPassword: '', newPassword: '', confirmPassword: '' })
 const pwdRules = {
@@ -72,9 +88,19 @@ const pwdRules = {
 }
 
 onMounted(async () => {
-  const res = await api.get('/admin/profile') as any
-  if (res.data) Object.assign(profile, { password: undefined, ...res.data })
+  const [profileRes, siteRes] = await Promise.all([
+    api.get('/admin/profile'),
+    api.get('/settings')
+  ])
+  if ((profileRes as any).data) Object.assign(profile, { password: undefined, ...(profileRes as any).data })
+  if ((siteRes as any).data) Object.assign(siteForm, (siteRes as any).data)
 })
+
+const saveSiteSettings = async () => {
+  siteSaving.value = true
+  try { await api.put('/admin/settings', siteForm); ElMessage.success('网站设置已更新') }
+  finally { siteSaving.value = false }
+}
 
 const saveProfile = async () => {
   saving.value = true
