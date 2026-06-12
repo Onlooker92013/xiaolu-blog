@@ -31,3 +31,16 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 
 app.mount('#app')
+
+// Dynamic favicon & title from site settings
+fetch('/api/settings')
+  .then(r => r.json())
+  .then(res => {
+    const s = res.data || {}
+    if (s.site_name) document.title = s.site_name
+    if (s.avatar_url) {
+      const link = document.querySelector('link[rel="icon"]') as HTMLLinkElement
+      if (link) link.href = s.avatar_url
+    }
+  })
+  .catch(() => {})
