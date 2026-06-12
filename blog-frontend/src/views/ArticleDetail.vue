@@ -79,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import api from '@/api'
@@ -107,7 +107,8 @@ const readingTime = computed(() => {
   return Math.max(1, Math.ceil((cnChars / 400) + (words / 200)))
 })
 
-// Marked: highlight + postprocess heading IDs
+// Marked: highlight + heading IDs + code block copy/collapse
+let codeBlockIndex = 0
 marked.use({
   highlight(code: string, lang: string) {
     if (lang && hljs.getLanguage(lang)) return hljs.highlight(code, { language: lang }).value
@@ -115,13 +116,56 @@ marked.use({
   },
   hooks: {
     postprocess(html: string) {
-      return html.replace(/<h([1-3])>(.*?)<\/h\1>/g, (_: string, level: string, text: string) => {
+      // 1. Heading IDs
+      html = html.replace(/<h([1-3])>(.*?)<\/h\1>/g, (_: string, level: string, text: string) => {
         const id = text.replace(/<[^>]*>/g, '').replace(/[^\w一-鿿\s-]/g, '').trim().replace(/\s+/g, '-').toLowerCase() || 'heading'
         return `<h${level} id="${id}">${text}</h${level}>`
       })
+      // 2. Code blocks: wrap with copy + collapse
+      html = html.replace(/<pre><code class="language-(\w*)?">?([\s\S]*?)<\/code><\/pre>/g, (_, lang, code) => {
+        const label = lang || 'code'
+        const idx = ++codeBlockIndex
+        return `<div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-lang">${label}</span>
+            <div class="code-block-actions">
+              <button class="code-btn code-copy-btn" data-code-id="${idx}" title="复制代码">📋 复制</button>
+              <button class="code-btn code-fold-btn" data-fold-id="${idx}" title="折叠代码">▲ 收起</button>
+            </div>
+          </div>
+          <div class="code-block-body" data-fold-body="${idx}">
+            <pre><code class="language-${label}">${code}</code></pre>
+          </div>
+        </div>`
+      })
+      return html
     }
   }
 })
+
+// Global click handler for code buttons
+const handleCodeBlockClick = (e: MouseEvent) => {
+  const target = e.target as HTMLElement
+  // Copy
+  if (target.classList.contains('code-copy-btn')) {
+    const wrapper = target.closest('.code-block-wrapper')
+    const code = wrapper?.querySelector('code')?.textContent || ''
+    navigator.clipboard.writeText(code).then(() => {
+      target.textContent = '✅ 已复制'
+      setTimeout(() => { target.textContent = '📋 复制' }, 2000)
+    })
+  }
+  // Fold
+  if (target.classList.contains('code-fold-btn')) {
+    const id = target.dataset.foldId
+    const body = document.querySelector(`[data-fold-body="${id}"]`) as HTMLElement
+    if (body) {
+      const hidden = body.style.display === 'none'
+      body.style.display = hidden ? '' : 'none'
+      target.textContent = hidden ? '▲ 收起' : '▼ 展开'
+    }
+  }
+}
 
 const renderedContent = computed(() => displayContent.value ? marked(displayContent.value) : '')
 
@@ -152,6 +196,10 @@ watch(() => route.params.id, () => {
 
 onMounted(() => {
   fetchArticle()
+  document.addEventListener('click', handleCodeBlockClick)
+})
+onUnmounted(() => {
+  document.removeEventListener('click', handleCodeBlockClick)
 })
 </script>
 
@@ -239,6 +287,28 @@ onMounted(() => {
 .comments-section h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; }
 .comments-placeholder { text-align: center; padding: 40px 20px; color: var(--text-muted); background: var(--bg-primary); border-radius: 12px; }
 .comments-placeholder .hint { font-size: 0.85rem; margin-top: 6px; opacity: 0.7; }
+
+/* Code block wrapper */
+.article-content :deep(.code-block-wrapper) {
+  border-radius: 10px; overflow: hidden; margin: 16px 0;
+  border: 1px solid var(--border-color);
+}
+.article-content :deep(.code-block-header) {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 14px; background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.82rem; color: var(--text-secondary);
+}
+.article-content :deep(.code-lang) { font-weight: 600; text-transform: uppercase; }
+.article-content :deep(.code-block-actions) { display: flex; gap: 6px; }
+.article-content :deep(.code-btn) {
+  padding: 2px 10px; border-radius: 6px; border: 1px solid var(--border-color);
+  background: var(--bg-card); color: var(--text-secondary);
+  font-size: 0.78rem; cursor: pointer; transition: all 0.15s;
+}
+.article-content :deep(.code-btn:hover) { background: var(--accent); color: #fff; border-color: var(--accent); }
+.article-content :deep(.code-block-body) { transition: max-height 0.3s; }
+.article-content :deep(.code-block-body pre) { margin: 0; border-radius: 0; }
 
 @media (max-width: 900px) {
   .article-page { flex-direction: column; }
