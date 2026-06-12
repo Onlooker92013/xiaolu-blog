@@ -181,10 +181,10 @@ onMounted(() => {
   /* hide scrollbar */
   scrollbar-width: none;
   -ms-overflow-style: none;
-}
-.article-sidebar::-webkit-scrollbar { display: none; }
   padding-bottom: 20px;
 }
+.article-sidebar::-webkit-scrollbar { display: none; }
+
 .sidebar-card,
 .article-sidebar :deep(.toc-card) {
   flex-shrink: 0;
