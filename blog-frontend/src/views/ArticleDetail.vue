@@ -174,11 +174,15 @@ onMounted(() => {
 /* Sidebar */
 .article-sidebar {
   width: 280px; flex-shrink: 0;
+  position: sticky; top: 80px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto; scrollbar-width: thin;
   display: flex; flex-direction: column; gap: 16px;
+  padding-bottom: 20px;
 }
 .sidebar-card {
   background: var(--bg-card); border: 1px solid var(--border-color);
-  border-radius: 14px; padding: 20px;
+  border-radius: 14px; padding: 20px; flex-shrink: 0;
 }
 .sidebar-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; color: var(--text-primary); }
 
@@ -229,7 +233,7 @@ onMounted(() => {
 
 @media (max-width: 900px) {
   .article-page { flex-direction: column; }
-  .article-sidebar { width: 100%; position: static; }
+  .article-sidebar { width: 100%; position: static; max-height: none; padding: 0 0 24px 0; }
   .article-main { padding: 20px; }
   .article-nav { flex-direction: column; }
   .nav-link { max-width: 100%; }
