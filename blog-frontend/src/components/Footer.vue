@@ -32,7 +32,7 @@ import { Sunny, Moon } from '@element-plus/icons-vue'
 
 const appStore = useAppStore()
 const currentYear = new Date().getFullYear()
-const startDate = new Date('2021-04-01')
+const startDate = new Date('2025-08-15')
 const daysOnline = computed(() => Math.floor((Date.now() - startDate.getTime()) / 86400000))
 </script>
 
